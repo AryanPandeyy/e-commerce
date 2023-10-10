@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+// one billboards one category
+model BillBoards {
+  id        String     @id @default(uuid())
+  label     String
+  // this image is different from product image
+  imageUrl  String
+  createdAt DateTime   @default(now())
+  category  Category[]
+}
+
+model Products {
+  id         String   @id @default(uuid())
+  name       String
+  price      Int
+  archived   Boolean  @default(false)
+  featured   Boolean  @default(false)
+  // one to many relationship
+  // when you create a product then a category must to be selected
+  category   Category @relation("CategoryToProducts", fields: [categoryId], references: [id])
+  categoryId String
+  color      Colors   @relation(fields: [colorId], references: [id])
+  colorId    String
+  products   Size     @relation(fields: [sizeId], references: [id])
+  sizeId     String
+  order      Orders[]
+  Image      Image[]
+  createdAt  DateTime @default(now())
+}
+
+model Category {
+  id          String     @id @default(uuid())
+  name        String
+  // One category can have many products
+  product     Products[] @relation("CategoryToProducts")
+  // https://www.prisma.io/docs/concepts/components/prisma-schema/relations/one-to-one-relations
+  billboard   BillBoards @relation(fields: [billBoardId], references: [id])
+  billBoardId String
+  createdAt   DateTime   @default(now())
+}
+
+model Size {
+  id        String     @id @default(uuid())
+  name      String
+  value     Int
+  // One category can have many products
+  // Instead of storing whole product only a id will be saved of it
+  product   Products[]
+  productId String
+  createdAt DateTime   @default(now())
+}
+
+model Colors {
+  id        String     @id @default(uuid())
+  name      String
+  value     Int
+  product   Products[]
+  // One category can have many products
+  // Instead of storing whole product only a id will be saved of it
+  createdAt DateTime   @default(now())
+}
+
+model Orders {
+  id        String   @id @default(uuid())
+  products  Products @relation(fields: [productId], references: [id])
+  productId String
+  phoneNo   Int
+  address   String
+  price     Int
+  paid      Boolean  @default(false)
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  url       String
+  productId String
+  product   Products @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+}
