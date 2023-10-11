@@ -2,34 +2,50 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
-type data = {
-  data: Array<{ name: string; createdAt: string; billBoard: string }>;
-};
+type data = { data: Array<{ createdAt: Date; label: string }> };
+const addItemCategory = () => {
+  const [data, setData] = useState<data>();
 
-const addItemCategory = ({ data }: data) => {
-  const [categoryName, setCategoryName] = useState<string>("");
+  const init = async () => {
+    const data = await fetch("/api/billboard");
+    const result = await data.json();
+    console.log(result.data);
+    setData(result);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
 
   return (
-    <>
-      <div>
-        <h1>Category</h1>
-        <p>Add a new category</p>
+    <div className="m-4">
+      <div className="border-b-2 mb-4 pb-2">
+        <h1 className="font-bold">Create Category</h1>
+        <p className="text-xs text-gray-700">
+          Manage categories for your store
+        </p>
       </div>
-      <div>
-        <Label htmlFor="email">Email</Label>
-        <Input
-          type="text"
-          value={categoryName}
-          onChange={(e) => setCategoryName(e.target.value)}
-        />
+      <div className="flex flex-row">
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input type="text" />
+        </div>
+        <div>
+          <Label htmlFor="BillBoard">BillBoard</Label>
+          <select>
+            {data?.data.map((e) => (
+              <option key={1} value={e.label}>
+                {e.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div>
-        <Label htmlFor="BillBoard">Email</Label>
-        <select>{data?.map((e) => <option>{e.billBoard}</option>)}</select>
-      </div>
-    </>
+      <Button>Create</Button>
+    </div>
   );
 };
 
