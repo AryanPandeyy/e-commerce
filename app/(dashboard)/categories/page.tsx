@@ -33,10 +33,12 @@ export default async function Categories() {
             Manage categories for your store
           </p>
         </div>
-        <Button>
-          <Plus className="mr-1" />
-          Add New
-        </Button>
+        <a href="/categories/addcategory">
+          <Button>
+            <Plus className="mr-1" />
+            Add New
+          </Button>
+        </a>
       </div>
       <DataTable columns={columns} data={data} />
     </div>

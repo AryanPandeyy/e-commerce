@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ModeToggle } from "@/components/ModeToggle";
 
 export default async function NavBar() {
   return (
@@ -22,12 +23,7 @@ export default async function NavBar() {
       >
         Products
       </Link>
-      <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Settings
-      </Link>
+      <ModeToggle />
     </nav>
   );
 }
