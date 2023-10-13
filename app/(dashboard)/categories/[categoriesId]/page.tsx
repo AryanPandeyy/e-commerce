@@ -4,12 +4,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type data = { data: Array<{ createdAt: Date; label: string; id: string }> };
 const AddItemCategory = () => {
   const [data, setData] = useState<data>();
   const [categoryName, setCategoryName] = useState<string>("");
-  const [billboardLabel, setBillboardLabel] = useState("");
+  const [billBoardId, setBillBoardId] = useState("");
 
   const init = async () => {
     const data = await fetch("http://localhost:3000/api/billboard");
@@ -20,16 +27,19 @@ const AddItemCategory = () => {
 
   const handleCreateCategory = async () => {
     try {
-      await fetch("http://localhost:3000/api/categories", {
+      const data = await fetch("http://localhost:3000/api/categories", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
           categoryName: categoryName,
-          billboardLabel: billboardLabel,
+          billBoardId: billBoardId,
         }),
-      }).then((data) => console.log("FETCH DATA", data));
+      });
+      console.log(data);
+      // https://github.com/vercel/next.js/issues/49298#issuecomment-1542055642
+      // https://medium.com/@deadlyunicorn/how-to-solve-worarkound-next-navigation-redirect-error-inside-try-catch-nextjs13-500a5b5db89d
     } catch (e) {
       console.log("TRY CATCH ERROR", e);
     }
@@ -52,26 +62,30 @@ const AddItemCategory = () => {
           <Label htmlFor="email">Name</Label>
           <Input
             type="text"
+            className="w-[180px]"
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
           />
         </div>
-        <div>
+        <div className="ml-2">
           <Label htmlFor="BillBoard">BillBoard</Label>
-          <select
-            value={billboardLabel}
-            onChange={(e) => setBillboardLabel(e.target.value)}
-          >
-            {data?.data.map((e, key) => (
-              <option key={key} value={e.id}>
-                {e.label}
-              </option>
-            ))}
-          </select>
+          <Select value={billBoardId} onValueChange={setBillBoardId}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select Billboard" />
+            </SelectTrigger>
+            <SelectContent>
+              {data?.data.map((e, key) => (
+                <SelectItem key={key} value={e.id}>
+                  {e.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
-      {billboardLabel}
-      <Button onClick={handleCreateCategory}>Create</Button>
+      <Button onClick={handleCreateCategory} className="mt-2">
+        Create
+      </Button>
     </div>
   );
 };

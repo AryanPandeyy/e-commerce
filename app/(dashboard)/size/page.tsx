@@ -2,27 +2,15 @@ import { Button } from "@/components/ui/button";
 import prisma from "@/lib/db";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "./components/products-columns";
+import { columns } from "./components/sizes-column";
 
-// https://github.com/vercel/next.js/discussions/54355
 export default async function Categories() {
-  const getProducts = await prisma.products.findMany({
-    include: {
-      category: true,
-      size: true,
-      color: true,
-    },
-  });
+  const getSizes = await prisma.size.findMany();
   // formating data
-  const data = getProducts.map((value) => {
+  const data = getSizes.map((value) => {
     return {
       name: value.name,
-      archived: value.archived,
-      featured: value.featured,
-      price: value.price,
-      category: value.category.name,
-      size: value.size.name,
-      color: value.color.value,
+      value: value.value,
       createdAt: value.createdAt.toLocaleDateString("en-US", {
         weekday: "long",
         year: "numeric",
@@ -35,12 +23,12 @@ export default async function Categories() {
     <div className="m-4">
       <div className="flex flex-row justify-between mb-2 border-b-2 p-2">
         <div>
-          <h1 className="font-bold">Products ({getProducts.length})</h1>
+          <h1 className="font-bold">Sizes ({getSizes.length})</h1>
           <p className="text-xs text-gray-700">
-            Manage products for your store
+            Manage sizes for your products
           </p>
         </div>
-        <a href="/products/addproducts">
+        <a href="/size/addsize">
           <Button>
             <Plus className="mr-1" />
             Add New

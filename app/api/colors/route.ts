@@ -2,17 +2,17 @@ import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
-  const data = await prisma.billBoards.findMany();
+  const data = await prisma.colors.findMany();
   return NextResponse.json({ data });
 }
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  console.log(data);
-  await prisma.billBoards.create({
+  console.log("JSON FROM SERVER ", data);
+  await prisma.colors.create({
     data: {
-      label: data.billBoardLabel,
-      imageUrl: data.imageUrl,
+      name: data.name,
+      value: data.value,
     },
   });
   return NextResponse.json({ message: "ok" });

@@ -2,7 +2,8 @@ import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
-  return NextResponse.json({ message: "hi" });
+  const data = await prisma.category.findMany();
+  return NextResponse.json({ data });
 }
 
 export async function POST(req: NextRequest) {
@@ -11,7 +12,7 @@ export async function POST(req: NextRequest) {
   await prisma.category.create({
     data: {
       name: data.categoryName,
-      billBoardId: data.billboardLabel,
+      billBoardId: data.billBoardId,
     },
   });
   return NextResponse.json({ message: "ok" });

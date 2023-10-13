@@ -4,15 +4,20 @@ import { ColumnDef } from "@tanstack/react-table";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Categories = {
-  label: string;
-  createdAt: Date;
+export type Colors = {
+  name: string;
+  value: string;
+  createdAt: string;
 };
 
-export const columns: ColumnDef<Categories>[] = [
+export const columns: ColumnDef<Colors>[] = [
   {
-    accessorKey: "label",
-    header: "Label",
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "value",
+    header: "Value",
   },
   {
     accessorKey: "createdAt",

@@ -12,16 +12,46 @@ export default async function NavBar() {
         Overview
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/billboard"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Customers
+        BillBoard
+      </Link>
+      <Link
+        href="/categories"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        Categories
+      </Link>
+      <Link
+        href="/size"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        Sizes
+      </Link>
+      <Link
+        href="/colors"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        Colors
       </Link>
       <Link
         href="/products"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Products
+        Product
+      </Link>
+      <Link
+        href="/products"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        Orders
+      </Link>
+      <Link
+        href="/products"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        Settings
       </Link>
       <ModeToggle />
     </nav>
