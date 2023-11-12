@@ -6,14 +6,34 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  // cant keep with docker running sqlcontainter
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// one store many billboards and all
+// one to one syntax is -> something Something[]
+// one to many syntax is -> something Something?
+model Store {
+  id         String       @id @default(uuid())
+  name       String
+  // if you have given name then you gotta include this here.
+  billboards BillBoards[] @relation("StoreToBillBoard")
+  categories Category[]   @relation("StoreToCategory")
+  products   Products[]
+  sizes      Size[]
+  colors     Colors[]
+  orders     Orders[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 }
 
 // one billboards one category
 model BillBoards {
   id        String     @id @default(uuid())
   label     String
+  storeId   String
+  store     Store      @relation("StoreToBillBoard", fields: [storeId], references: [id])
   // this image is different from product image
   imageUrl  String
   createdAt DateTime   @default(now())
@@ -23,6 +43,8 @@ model BillBoards {
 model Products {
   id         String   @id @default(uuid())
   name       String
+  storeId    String
+  store      Store    @relation(fields: [storeId], references: [id])
   price      Int
   archived   Boolean  @default(false)
   featured   Boolean  @default(false)
@@ -42,6 +64,8 @@ model Products {
 model Category {
   id          String     @id @default(uuid())
   name        String
+  storeId     String
+  store       Store      @relation("StoreToCategory", fields: [storeId], references: [id])
   // One category can have many products
   product     Products[] @relation("CategoryToProducts")
   // https://www.prisma.io/docs/concepts/components/prisma-schema/relations/one-to-one-relations
@@ -53,6 +77,8 @@ model Category {
 model Size {
   id        String     @id @default(uuid())
   name      String
+  storeId   String
+  store     Store      @relation(fields: [storeId], references: [id])
   value     String
   // One category can have many products
   // Instead of storing whole product only a id will be saved of it
@@ -63,6 +89,8 @@ model Size {
 model Colors {
   id        String     @id @default(uuid())
   name      String
+  storeId   String
+  store     Store      @relation(fields: [storeId], references: [id])
   value     String
   product   Products[]
   // One category can have many products
@@ -72,6 +100,8 @@ model Colors {
 
 model Orders {
   id        String   @id @default(uuid())
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id])
   products  Products @relation(fields: [productId], references: [id])
   productId String
   phoneNo   Int

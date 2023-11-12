@@ -11,12 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { useParams } from "next/navigation";
 type data = { data: Array<{ createdAt: Date; label: string; id: string }> };
 const AddItemCategory = () => {
   const [data, setData] = useState<data>();
   const [categoryName, setCategoryName] = useState<string>("");
   const [billBoardId, setBillBoardId] = useState("");
+  const { storeId }: { storeId: string } = useParams();
 
   const init = async () => {
     const data = await fetch("http://localhost:3000/api/billboard");
@@ -35,6 +36,7 @@ const AddItemCategory = () => {
         body: JSON.stringify({
           categoryName: categoryName,
           billBoardId: billBoardId,
+          storeId: storeId,
         }),
       });
       console.log(data);

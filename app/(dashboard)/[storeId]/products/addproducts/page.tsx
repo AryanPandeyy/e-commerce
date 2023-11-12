@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useParams } from "next/navigation";
 
 type data = Array<{ name: string; id: string }>;
 type colorData = Array<{ value: string; id: string }>;
@@ -27,6 +28,7 @@ const AddItemCategory = () => {
   const [colorId, setColorId] = useState("");
   const [featured, setFeatured] = useState(false);
   const [archived, setArchived] = useState(false);
+  const { storeId }: { storeId: string } = useParams();
 
   const init = async () => {
     const getCategory = await fetch("http://localhost:3000/api/categories");
@@ -59,6 +61,7 @@ const AddItemCategory = () => {
           colorId: colorId,
           featured: featured,
           archived: archived,
+          storeId: storeId,
         }),
       });
       console.log(data);

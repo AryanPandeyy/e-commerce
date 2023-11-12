@@ -4,16 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useParams } from "next/navigation";
 
 const AddBillBoard = () => {
   const [billBoardLabel, setBillBoardLabel] = useState("");
+  const { storeId } = useParams();
 
   const handleCreateBillBoard = async () => {
     try {
@@ -26,6 +21,7 @@ const AddBillBoard = () => {
           billBoardLabel: billBoardLabel,
           // TODO imageUrl
           imageUrl: "test",
+          storeId: storeId,
         }),
       }).then((data) => console.log("FETCH DATA", data));
     } catch (e) {

@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <div>
-      <h1>hi</h1>
-    </div>
+    <section>
+      <h1 className="text-5xl border border-b-black">DashBoard</h1>
+    </section>
   );
 }

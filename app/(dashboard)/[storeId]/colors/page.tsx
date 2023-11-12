@@ -2,12 +2,20 @@ import { Button } from "@/components/ui/button";
 import prisma from "@/lib/db";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "./components/sizes-column";
+import { columns } from "./components/colors-column";
 
-export default async function Categories() {
-  const getSizes = await prisma.size.findMany();
+export default async function Categories({
+  params,
+}: {
+  params: { storeId: string };
+}) {
+  const getColors = await prisma.colors.findMany({
+    where: {
+      storeId: params.storeId,
+    },
+  });
   // formating data
-  const data = getSizes.map((value) => {
+  const data = getColors.map((value) => {
     return {
       name: value.name,
       value: value.value,
@@ -23,12 +31,12 @@ export default async function Categories() {
     <div className="m-4">
       <div className="flex flex-row justify-between mb-2 border-b-2 p-2">
         <div>
-          <h1 className="font-bold">Sizes ({getSizes.length})</h1>
+          <h1 className="font-bold">Colors ({getColors.length})</h1>
           <p className="text-xs text-gray-700">
-            Manage sizes for your products
+            Manage colors for your products
           </p>
         </div>
-        <a href="/size/addsize">
+        <a href="colors/addcolors">
           <Button>
             <Plus className="mr-1" />
             Add New

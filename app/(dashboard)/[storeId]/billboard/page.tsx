@@ -1,22 +1,25 @@
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/db";
 import { Plus } from "lucide-react";
-import { columns } from "./components/categories-column";
 import { DataTable } from "@/components/ui/data-table";
+import { columns } from "./components/billboard-columns";
 
 // https://github.com/vercel/next.js/discussions/54355
-export default async function Categories() {
-  const getCategories = await prisma.category.findMany({
-    include: {
-      billboard: true,
+export default async function BillBoard({
+  params,
+}: {
+  params: { storeId: string };
+}) {
+  const getBillBoards = await prisma.billBoards.findMany({
+    where: {
+      storeId: params.storeId,
     },
   });
-  // formating data
-  const data = getCategories.map((category) => {
+  const data = getBillBoards.map((value) => {
     return {
-      name: category.name,
-      billBoard: category.billboard.label,
-      createdAt: category.createdAt.toLocaleDateString("en-US", {
+      label: value.label,
+      imageUrl: value.imageUrl,
+      createdAt: value.createdAt.toLocaleDateString("en-US", {
         weekday: "long",
         year: "numeric",
         month: "long",
@@ -28,12 +31,12 @@ export default async function Categories() {
     <div className="m-4">
       <div className="flex flex-row justify-between mb-2 border-b-2 p-2">
         <div>
-          <h1 className="font-bold">Categories ({getCategories.length})</h1>
+          <h1 className="font-bold">Billboards ({getBillBoards.length})</h1>
           <p className="text-xs text-gray-700">
-            Manage categories for your store
+            Manage billboards for your store
           </p>
         </div>
-        <a href="/categories/addcategory">
+        <a href="billboard/addbillboard">
           <Button>
             <Plus className="mr-1" />
             Add New

@@ -11,10 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useParams } from "next/navigation";
 
 const AddItemCategory = () => {
   const [colorName, setColorName] = useState("");
   const [colorValue, setColorValue] = useState("");
+  const { storeId }: { storeId: string } = useParams();
 
   const handleCreateCategory = async () => {
     try {
@@ -26,6 +28,7 @@ const AddItemCategory = () => {
         body: JSON.stringify({
           name: colorName,
           value: colorValue,
+          storeId: storeId,
         }),
       });
       console.log(data);
