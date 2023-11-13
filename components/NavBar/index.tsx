@@ -1,56 +1,59 @@
+"use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ModeToggle } from "@/components/ModeToggle";
 import StoreSwitcher from "../StoreSwitcher";
+import { useParams } from "next/navigation";
 
-export default async function NavBar() {
+export default function NavBar() {
+  const { storeId }: { storeId: string } = useParams();
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6 mx-6")}>
       <StoreSwitcher />
       <Link
-        href="/"
+        href={`/${storeId}/`}
         className="text-sm font-medium transition-colors hover:text-primary"
       >
         Overview
       </Link>
       <Link
-        href="/billboard"
+        href={`/${storeId}/billboard`}
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         BillBoard
       </Link>
       <Link
-        href="/categories"
+        href={`/${storeId}/categories`}
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Categories
       </Link>
       <Link
-        href="/size"
+        href={`/${storeId}/size`}
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Sizes
       </Link>
       <Link
-        href="/colors"
+        href={`/${storeId}/colors`}
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Colors
       </Link>
       <Link
-        href="/products"
+        href={`/${storeId}/products`}
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Product
       </Link>
       <Link
-        href="/orders"
+        href={`/${storeId}/orders`}
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Orders
       </Link>
       <Link
-        href="/products"
+        href={`/${storeId}/products`}
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Settings

@@ -3,7 +3,6 @@ import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -18,52 +17,58 @@ import {
 } from "@/components/ui/popover";
 
 import { FC } from "react";
-interface StoreSwitcherProps {
+import Link from "next/link";
+interface StoreSwitcherProps {}
+
+interface resultType {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const StoreSwitcher: FC<StoreSwitcherProps> = ({}) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const [frameworks, setFrameworks] = React.useState<
-    { value: string; label: string }[]
-  >([]);
+  const [store, setStore] = React.useState<resultType[]>([]);
 
   React.useEffect(() => {
     const fetchFrameworks = async () => {
       const frameworksData = await fetch("http://localhost:3000/api/stores");
-      const result = await frameworksData.json();
+      const result: resultType[] = await frameworksData.json();
       console.log(result);
-      setFrameworks(result);
+      setStore(result);
     };
 
     fetchFrameworks();
 
-    console.log(frameworks);
+    console.log(store);
   }, []);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
+        <Link
+          // variant="outline"
           role="combobox"
           aria-expanded={open}
           className="w-[200px] justify-between"
+          href={`/${value}`}
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
+            ? store.find((store) => store.name === value)?.name
             : "Select Store..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+        </Link>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput placeholder="Search framework..." />
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
-            {frameworks.map((framework) => (
+            {store.map((store) => (
               <CommandItem
-                key={framework.value}
-                value={framework.value}
+                key={store.name}
+                value={store.name}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
@@ -72,10 +77,10 @@ const StoreSwitcher: FC<StoreSwitcherProps> = ({}) => {
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === framework.value ? "opacity-100" : "opacity-0",
+                    value === store.name ? "opacity-100" : "opacity-0",
                   )}
                 />
-                {framework.label}
+                {store.name}
               </CommandItem>
             ))}
           </CommandGroup>
