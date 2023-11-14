@@ -3,6 +3,7 @@ import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -18,7 +19,9 @@ import {
 
 import { FC } from "react";
 import Link from "next/link";
-interface StoreSwitcherProps {}
+interface StoreSwitcherProps {
+  className: string
+}
 
 interface resultType {
   id: string;
@@ -27,43 +30,42 @@ interface resultType {
   updatedAt: Date;
 }
 
-const StoreSwitcher: FC<StoreSwitcherProps> = ({}) => {
+const StoreSwitcher: FC<StoreSwitcherProps> = ({ className }) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [store, setStore] = React.useState<resultType[]>([]);
 
   React.useEffect(() => {
-    const fetchFrameworks = async () => {
-      const frameworksData = await fetch("http://localhost:3000/api/stores");
-      const result: resultType[] = await frameworksData.json();
+    const fetchstores = async () => {
+      const storesData = await fetch("http://localhost:3000/api/stores");
+      const result: resultType[] = await storesData.json();
       console.log(result);
       setStore(result);
     };
 
-    fetchFrameworks();
+    fetchstores();
 
     console.log(store);
   }, []);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Link
-          // variant="outline"
+        <Button
+          variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
-          href={`/${value}`}
+          className={cn("w-[200px] justify-between", className)}
         >
           {value
             ? store.find((store) => store.name === value)?.name
             : "Select Store..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Link>
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandInput placeholder="Search store..." />
+          <CommandEmpty>No store found.</CommandEmpty>
           <CommandGroup>
             {store.map((store) => (
               <CommandItem
@@ -80,7 +82,9 @@ const StoreSwitcher: FC<StoreSwitcherProps> = ({}) => {
                     value === store.name ? "opacity-100" : "opacity-0",
                   )}
                 />
-                {store.name}
+                <Link href={`/${store.id}`}>
+                  {store.name}
+                </Link>
               </CommandItem>
             ))}
           </CommandGroup>

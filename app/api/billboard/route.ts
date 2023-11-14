@@ -24,3 +24,13 @@ export async function POST(req: NextRequest) {
   });
   return NextResponse.json({ message: "ok" });
 }
+
+export async function DELETE(req: NextRequest) {
+  const data = await req.json();
+  await prisma.billBoards.delete({
+    where: {
+      id: data.billBoardId,
+    },
+  });
+  return NextResponse.json({ message: "ok" });
+}

@@ -5,7 +5,7 @@ export const runtime = "nodejs";
 
 export default authMiddleware({
   publicRoutes: [
-    // "/",
+    "/",
     "/sign-in(.*)",
     "/sign-up(.*)",
     "/api(.*)",

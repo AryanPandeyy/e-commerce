@@ -9,7 +9,7 @@ export default function NavBar() {
   const { storeId }: { storeId: string } = useParams();
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6 mx-6")}>
-      <StoreSwitcher />
+      <StoreSwitcher className="text-sm font-medium transition-colors hover:text-primary h-8" />
       <Link
         href={`/${storeId}/`}
         className="text-sm font-medium transition-colors hover:text-primary"
